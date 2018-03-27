@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分享你的事迹</title>
+    <link type="text/css" rel="stylesheet" href="css/index.css">
+    <link type="text/css" rel="stylesheet" href="css/carousel.css">
+    <link type="text/css" rel="stylesheet" href="css/dimendion.css">
+    <link type="text/css" rel="stylesheet" href="css/boutique.css">
+
+</head>
+<body>
+    <header class="header">
+        <div class="header_logo fl"></div>
+        <ul id="navigation">
+            <li class="nav">
+                <div class="login_logo"><img src="img/me.png"></div>
+                <div class="login">
+                    <form id="info">
+                        <label for="username">账号</label>
+                        <input type="text" id="username">
+                        <label for="password">密码</label>
+                        <input type="password" id="password">
+                    </form>
+                    <button form="info">登录</button>
+                </div>
+            </li>
+        </ul>
+    </header>
+    <article id="wrap">
+        <div class="wrpaper">
+            <div id="product_list">
+                <div class="product_box show">
+                    <div id="contentContainer" class="trans3d">
+                        <ul id="carouselContainer" class="trans3d">
+                        </ul>
+                    </div>
+                </div>
+                <div class="product_box">
+                    <div id="screen">
+                        <div id="command">
+                            <h2 id="dimendionTitle">1</h2>
+                            <p id="dimendionDescription">1.1</p>
+                            <div id="bar"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product_box">
+                    <div id="boutique">
+                        <ul id="b_thumbs"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <script>
+        var imageData = [
+            {src:"img/me.png",title:"1",desciption:"1.1"},
+            {src:"img/me_h.png",title:"2",desciption:"2.1"},
+            {src:"img/me.png",title:"3",desciption:"3.1"},
+            {src:"img/me_h.png",title:"4",desciption:"4.1"}
+        ];
+    </script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.masonry.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/libs.min.js"></script>
+    <script type="text/javascript" src="js/carousel.js"></script>
+    <script type="text/javascript" src="js/dimendion.js"></script>
+    <script type="text/javascript" src="js/boutique.js"></script>
+    <script>
+        var $pages = $("#product_list").find(".product_box"),
+            $login = $(".login"),
+            $login_input = $("#navigation").find("input"),
+            $icon_login = $(".login_logo");
+        var data = {
+            pLength: $pages.length,
+            curP: 0,
+            cNum: 0,
+            isCan: true,
+            isOnbtn: false,
+            dur: 4000,
+            nav_focus: 1
+        };
+
+        //登录界面滑出
+        $icon_login.on("mouseenter",function () {
+            $login.addClass("show");
+        });
+        $login.on("mouseleave",function () {
+            if (data.nav_focus){
+                $login.removeClass("show");
+            }
+        });
+        $login_input.focus(function () {
+            data.nav_focus = 0;
+        });
+        $login_input.blur(function () {
+            data.nav_focus = 1;
+        });
+
+        //页面轮播
+        var pageChange = function (idx) {
+            if (data.isOnbtn) {
+                return
+            }
+            else if (idx >= -1 && idx < data.pLength && data.isCan) {
+                clearInterval(CId);
+                $pages.eq(data.curP).css({zIndex:0});
+                $pages.eq(idx).addClass("show").css({opacity:0,zIndex:1}).animate({opacity:1},400,function () {
+                    $pages.eq(data.curP).removeClass("show");
+                    data.curP = idx;
+                    CId = setInterval(function () {
+                        pageChange((data.curP+1)%data.pLength)
+                    },data.dur);
+                })
+            }
+        };
+
+        //鼠标悬停
+
+
+        CId = setInterval(function () {
+            pageChange((data.curP+1)%data.pLength)
+        },data.dur)
+    </script>
+</body>
+</html>
