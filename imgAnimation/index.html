@@ -46,8 +46,13 @@
                     </div>
                 </div>
                 <div class="product_box">
-                    <div id="boutique">
-                        <ul id="b_thumbs"></ul>
+                    <div class="iw_wrapper">
+                        <ul class="iw_thumbs" id="iw_thumbs">
+                            <li><img src="img/me.png" data-img="img/me.png" alt="Thumb1"/><div><h2>妃色影堂</h2><p>个性、自然、生动的瞬间变成您一张张此生难忘的记忆.</p></div></li>
+                        </ul>
+                    </div>
+                    <div id="iw_ribbon" class="iw_ribbon">
+                        <span class="iw_close"></span>
                     </div>
                 </div>
             </div>
@@ -61,6 +66,38 @@
             {src:"img/me.png",title:"3",desciption:"3.1"},
             {src:"img/me_h.png",title:"4",desciption:"4.1"}
         ];
+/*
+        //添加图片
+        (function (data) {
+            var o,
+                i = 0;
+            while(o = data[i++]) {
+                //一
+                var img = document.createElement("img");
+                img.src = o.src;
+                img.setAttribute("class","carouselItemInner trans3d");
+                var li = document.createElement("li");
+                li.setAttribute("class","carouselItem trans3d");
+                li.appendChild(img);
+                document.getElementById("carouselContainer").append(li);
+
+                //三
+                var $iw_img = $("<img/>");
+                $iw_img.src = o.src;
+                $iw_img.data("img",o.src);
+                var $iw_title = $("<h2></h2>");
+                $iw_title.text(o.title);
+                var $iw_des = $("<p></p>");
+                $iw_des.text(o.desciption);
+                var $iw_div = $("<div></div>");
+                $iw_div.append($iw_title);
+                $iw_div.append($iw_des);
+                var $iw_li = $("<li></li>");
+                $iw_li.append($iw_img);
+                $iw_li.append($iw_div);
+            }
+        })(imageData);*/
+
     </script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.masonry.min.js"></script>
@@ -68,19 +105,19 @@
     <script type="text/javascript" src="js/libs.min.js"></script>
     <script type="text/javascript" src="js/carousel.js"></script>
     <script type="text/javascript" src="js/dimendion.js"></script>
-    <script type="text/javascript" src="js/boutique.js"></script>
     <script>
         var $pages = $("#product_list").find(".product_box"),
             $login = $(".login"),
             $login_input = $("#navigation").find("input"),
-            $icon_login = $(".login_logo");
+            $icon_login = $(".login_logo"),
+            $wrap_img = $("#wrap").find("img");
         var data = {
             pLength: $pages.length,
             curP: 0,
             cNum: 0,
             isCan: true,
             isOnbtn: false,
-            dur: 4000,
+            dur: 5000,
             nav_focus: 1
         };
 
@@ -106,6 +143,8 @@
                 return
             }
             else if (idx >= -1 && idx < data.pLength && data.isCan) {
+                ImageWall.closeRibbon();
+                console.log("pagechange");
                 clearInterval(CId);
                 $pages.eq(data.curP).css({zIndex:0});
                 $pages.eq(idx).addClass("show").css({opacity:0,zIndex:1}).animate({opacity:1},400,function () {
@@ -119,11 +158,18 @@
         };
 
         //鼠标悬停
-
+        $wrap_img.on("mouseenter",function () {
+            data.isOnbtn = true;
+        });
+        $wrap_img.on("mouseleave",function () {
+            data.isOnbtn = false;
+        });
 
         CId = setInterval(function () {
             pageChange((data.curP+1)%data.pLength)
         },data.dur)
     </script>
+
+    <script type="text/javascript" src="js/boutique.js"></script>
 </body>
 </html>
